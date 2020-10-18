@@ -14,27 +14,24 @@ class TestAndroidCreateWebSession(unittest.TestCase):
     time_out = 1
     HARD_WARE_BACK_BUTTON_KEY_CODE = 4
 
-    product_wheel = '//*[contains(text(), "Ken Block living life on the edge.")]'
-    wheel_size = '(//input[@name="Size"])[1]'
-    product_swimsuit = '/html/body/div/main/div/section/div[2]/a/figure/b'
-    swimsuit_size = '(//input[@name="Size"])[1]'
-    product_helmet = '/html/body/div/main/div/section/div[3]/a/figure/b'
-    add_to_cart_button = '//html/body/div/div[2]/div/div[2]/div/div[2]/button'
-    x_button = '//android.widget.Button'
-    go_back_button = '/html/body/div/div[2]/div/div[2]/div/div[1]/div/div[2]/div'
-    remove_product = '/html/body/div/div[5]/ul/li[1]/div[2]/div[1]/button/div'
+    product_wheel = {'product_wheel': '//*[contains(text(), "Ken Block living life on the edge.")]'}
+    wheel_size = {'wheel_size': '(//input[@name="Size"])[1]'}
+    product_swimsuit = {'product_swimsuit': '/html/body/div/main/div/section/div[2]/a/figure/b'}
+    swimsuit_size = {'swimsuit_size': '(//input[@name="Size"])[1]'}
+    product_helmet = {'product_helmet': '/html/body/div/main/div/section/div[3]/a/figure/b'}
+    add_to_cart_button = {'add_to_cart_button': '//html/body/div/div[2]/div/div[2]/div/div[2]/button'}
+    x_button = {'x_button': '//android.widget.Button'}
+    go_back_button = {'go_back_button': '/html/body/div/div[2]/div/div[2]/div/div[1]/div/div[2]/div'}
+    remove_product = {'remove_product': '/html/body/div/div[5]/ul/li[1]/div[2]/div[1]/button/div'}
+
+    product_swimsuit_detail_info = ["Ladies Black and Green wet suit", '$90.00', 'Size', 'S', 'M', 'L',
+                                    'Show More', 'Add To Cart']
+    product_swimsuit_detail_check_cart = ["Ladies Black and Green wet suit", '$90.00', 'S', '1']
+    product_helmet_detail_info = ["Fox Racing black Helmet", '$250.00', 'Product Description',
+                                  'Full face black Helmet width visor.', 'Add To Cart']
+    product_helmet_detail_check_cart = ["Fox Racing black Helmet", '$250.00', '1']
 
     def setUp(self):
-        # #iOS settings
-        # self.desired_caps = {}
-        # self.desired_caps['platformName'] = 'iOS'
-        # self.desired_caps['browserName'] = 'Safari'
-        # self.desired_caps['deviceName'] = 'DEVICE_NAME'
-        # self.desired_caps['platformVersion'] = '10.1'
-        # self.desired_caps['automationName'] = 'XCUITest'  # Possible to run without.
-        # self.desired_caps['udid'] = 'udid'
-        # self.desired_caps['startIWDP'] = True
-
         #Android settings
         desired_caps = {}
         desired_caps['platformName'] = 'Android'
@@ -59,13 +56,11 @@ class TestAndroidCreateWebSession(unittest.TestCase):
             for index, elem in enumerate([self.product_swimsuit, self.swimsuit_size, self.add_to_cart_button,
                                           self.product_helmet, self.add_to_cart_button, self.remove_product]):
                 if self.click_element(index, elem):
-                    print("Test Case: " + elem + " : Pass")
                     result_value = True
                 else:
-                    print("Test Case: " + elem + " : Fail")
-                    result_value = False
+                    return result_value
         except Exception as e:
-            print("FAIL in test_automation, ", e)
+            print("FAIL in test_automation, "+self.test_case_name, e)
             result_value = False
 
         finally:
@@ -78,20 +73,41 @@ class TestAndroidCreateWebSession(unittest.TestCase):
         print('Test Case: scroll_down')
 
     def click_element(self, index, test_case):
-        result_value = False
-        elem = WebDriverWait(self.driver, self.time_out).until(EC.presence_of_element_located((By.XPATH, test_case)))
-        time.sleep(self.time_out)
-        if elem:
-            elem.click()
-            result_value = True
-        if index == 0:
+        for test_case_name, test_case_xpath in test_case.items():
+            self.test_case_name = test_case_name
+            result_value = False
+            elem = WebDriverWait(self.driver, self.time_out).until(EC.presence_of_element_located((By.XPATH, test_case_xpath)))
             time.sleep(self.time_out)
-            self.scroll_down()
-        elif index == 2:
-            self.driver.press_keycode(self.HARD_WARE_BACK_BUTTON_KEY_CODE)
-            self.driver.find_element_by_xpath(self.go_back_button).click()
-        time.sleep(self.time_out)
-        return result_value
+            if elem:
+                elem.click()
+                result_value = True
+            if index == 0:
+                time.sleep(self.time_out)
+                self.scroll_down()
+            elif index == 1:
+                result_value = self.get_test_detail_information(self.product_swimsuit_detail_info)
+            elif index == 2:
+                result_value = self.get_test_detail_information(self.product_swimsuit_detail_check_cart)
+                self.driver.press_keycode(self.HARD_WARE_BACK_BUTTON_KEY_CODE)
+                self.driver.press_keycode(self.HARD_WARE_BACK_BUTTON_KEY_CODE)
+                # self.driver.find_element_by_xpath(self.go_back_button).click()
+            elif index == 3:
+                result_value = self.get_test_detail_information(self.product_helmet_detail_info)
+            elif index == 4:
+                result_value = self.get_test_detail_information(self.product_swimsuit_detail_check_cart
+                                                                + self.product_helmet_detail_check_cart)
+            time.sleep(self.time_out)
+            return result_value
+
+    def get_test_detail_information(self, product_detail_info):
+        result_vale = False
+        for detail_info in product_detail_info:
+            if detail_info in self.driver.page_source:
+                print("Test Case: Product information, " + detail_info + " is in the page - Pass")
+                result_vale = True
+            else:
+                print("Test Case: Product information, " + detail_info + " is NOT in the page" + " - Fail")
+        return result_vale
 
 
 if __name__ == "__main__":
