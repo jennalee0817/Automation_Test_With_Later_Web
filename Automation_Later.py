@@ -13,6 +13,7 @@ from appium.webdriver.common.mobileby import By
 class TestAndroidCreateWebSession(unittest.TestCase):
     time_out = 1
     HARD_WARE_BACK_BUTTON_KEY_CODE = 4
+    test_result = []
 
     product_wheel = {'product_wheel': '//*[contains(text(), "Ken Block living life on the edge.")]'}
     wheel_size = {'wheel_size': '(//input[@name="Size"])[1]'}
@@ -64,6 +65,9 @@ class TestAndroidCreateWebSession(unittest.TestCase):
             result_value = False
 
         finally:
+            print(self.test_result)
+            if 'Fail' in self.test_result:
+                result_value = False
             print("test_automation: " + str(result_value))
             return result_value
 
@@ -96,17 +100,25 @@ class TestAndroidCreateWebSession(unittest.TestCase):
             elif index == 4:
                 result_value = self.get_test_detail_information(self.product_swimsuit_detail_check_cart
                                                                 + self.product_helmet_detail_check_cart)
+            if result_value is True:
+                self.test_result.append("Pass")
+            else:
+                self.test_result.append("Fail")
             time.sleep(self.time_out)
             return result_value
 
     def get_test_detail_information(self, product_detail_info):
         result_vale = False
+        time.sleep(self.time_out)
         for detail_info in product_detail_info:
             if detail_info in self.driver.page_source:
-                print("Test Case: Product information, " + detail_info + " is in the page - Pass")
+                detail_test_result = "Pass"
+                print("Test Case: Product information, " + detail_info + " is in the page - "+detail_test_result)
                 result_vale = True
             else:
-                print("Test Case: Product information, " + detail_info + " is NOT in the page" + " - Fail")
+                detail_test_result = "Fail"
+                print("Test Case: Product information, " + detail_info + " is NOT in the page" + " - "+detail_test_result)
+            self.test_result.append(detail_test_result)
         return result_vale
 
 
