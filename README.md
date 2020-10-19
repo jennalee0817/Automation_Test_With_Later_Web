@@ -87,7 +87,8 @@ Test Case: Product information, $250.00 is in the page - Pass
 Test Case: Product information, 1 is in the page - Pass
 
 
-**"Full face bIack Helmet width visor." should be "Full face black Helmet width visor."**
+
+"Full face b**I**ack Helmet width visor." should be "Full face b**l**ack Helmet width visor."**
 
 
 
