@@ -1,5 +1,5 @@
 # Automation_Test_With_Later_Web
-## Sample Automation_Test_With_Later_Web
+## Automation_Test_With_Later_Web
 
 **Instructions:**
 
@@ -32,3 +32,12 @@
 > Model: LG V30
 
 > Android Version: 9
+
+## Test Result
+Test Case: Product information, Full face black Helmet width visor. is NOT in the page - **Fail**
+
+**"Full face bIack Helmet width visor." should be "Full face black Helmet width visor."**
+
+
+
+
