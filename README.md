@@ -88,7 +88,7 @@ Test Case: Product information, 1 is in the page - Pass
 
 
 
-"Full face b**I**ack Helmet width visor." should be "Full face b**l**ack Helmet width visor."**
+Black spelling is wring in "Full face b**I**ack Helmet width visor." upper letter i should be with L "Full face b**l**ack Helmet width visor."
 
 
 
