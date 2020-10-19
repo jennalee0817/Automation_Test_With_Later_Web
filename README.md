@@ -1,7 +1,7 @@
 # Automation_Test_With_Later_Web
 ## Automation_Test_With_Later_Web
 
-**Instructions:**
+## Instructions:## 
 
 > Open browser on a mobile device of your choice
 
@@ -33,7 +33,7 @@
 
 > Android Version: 9
 
-## Test Result
+## Test Cases
 Test Case: url is https://staging.linkin.bio/latergear : Pass
 
 Test Case: scroll_down
@@ -87,7 +87,7 @@ Test Case: Product information, $250.00 is in the page - Pass
 Test Case: Product information, 1 is in the page - Pass
 
 
-
+## Test Result
 Black spelling is wring in "Full face b**I**ack Helmet width visor." 
 
 Upper letter **i** should be with **L** "Full face b**l**ack Helmet width visor."
