@@ -34,7 +34,32 @@
 > Android Version: 9
 
 ## Test Result
+Test Case: url is https://staging.linkin.bio/latergear : Pass
+Test Case: scroll_down
+Test Case: Product information, Ladies Black and Green wet suit is in the page - Pass
+Test Case: Product information, $90.00 is in the page - Pass
+Test Case: Product information, Size is in the page - Pass
+Test Case: Product information, S is in the page - Pass
+Test Case: Product information, M is in the page - Pass
+Test Case: Product information, L is in the page - Pass
+Test Case: Product information, Show More is in the page - Pass
+Test Case: Product information, Add To Cart is in the page - Pass
+Test Case: Product information, Ladies Black and Green wet suit is in the page - Pass
+Test Case: Product information, $90.00 is in the page - Pass
+Test Case: Product information, S is in the page - Pass
+Test Case: Product information, 1 is in the page - Pass
+Test Case: Product information, Fox Racing black Helmet is in the page - Pass
+Test Case: Product information, $250.00 is in the page - Pass
+Test Case: Product information, Product Description is in the page - Pass
 Test Case: Product information, Full face black Helmet width visor. is NOT in the page - **Fail**
+Test Case: Product information, Add To Cart is in the page - Pass
+Test Case: Product information, Ladies Black and Green wet suit is in the page - Pass
+Test Case: Product information, $90.00 is in the page - Pass
+Test Case: Product information, S is in the page - Pass
+Test Case: Product information, 1 is in the page - Pass
+Test Case: Product information, Fox Racing black Helmet is in the page - Pass
+Test Case: Product information, $250.00 is in the page - Pass
+Test Case: Product information, 1 is in the page - Pass
 
 **"Full face bIack Helmet width visor." should be "Full face black Helmet width visor."**
 
