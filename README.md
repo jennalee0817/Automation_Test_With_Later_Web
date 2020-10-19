@@ -68,7 +68,7 @@ Test Case: Product information, $250.00 is in the page - Pass
 
 Test Case: Product information, Product Description is in the page - Pass
 
-Test Case: Product information, Full face black Helmet width visor. is NOT in the page - **Fail**
+**Test Case: Product information, Full face black Helmet width visor. is NOT in the page - Fail**
 
 Test Case: Product information, Add To Cart is in the page - Pass
 
