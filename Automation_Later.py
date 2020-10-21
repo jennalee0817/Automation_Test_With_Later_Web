@@ -7,10 +7,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from appium.webdriver.common.mobileby import By
 
-# from multi_automation_testing import multi_automation_settings
-
 
 class TestAndroidCreateWebSession(unittest.TestCase):
+    time_out_element = 20
     time_out = 1
     HARD_WARE_BACK_BUTTON_KEY_CODE = 4
     test_result = []
@@ -21,6 +20,7 @@ class TestAndroidCreateWebSession(unittest.TestCase):
     swimsuit_size = {'swimsuit_size': '(//input[@name="Size"])[1]'}
     product_helmet = {'product_helmet': '/html/body/div/main/div/section/div[3]/a/figure/b'}
     add_to_cart_button = {'add_to_cart_button': '//html/body/div/div[2]/div/div[2]/div/div[2]/button'}
+    add_to_cart_last = {'add_to_cart_last': '//html/body/div/div[2]/div/div[2]/div/div[2]/button'}
     x_button = {'x_button': '//android.widget.Button'}
     go_back_button = {'go_back_button': '/html/body/div/div[2]/div/div[2]/div/div[1]/div/div[2]/div'}
     remove_product = {'remove_product': '/html/body/div/div[5]/ul/li[1]/div[2]/div[1]/button/div'}
@@ -54,9 +54,9 @@ class TestAndroidCreateWebSession(unittest.TestCase):
                 print("Test Case: url is " + current_url + " : Fail")
                 return result_value
 
-            for index, elem in enumerate([self.product_swimsuit, self.swimsuit_size, self.add_to_cart_button,
-                                          self.product_helmet, self.add_to_cart_button, self.remove_product]):
-                if self.click_element(index, elem):
+            for test_case in ([self.product_swimsuit, self.swimsuit_size, self.add_to_cart_button,
+                          self.product_helmet, self.add_to_cart_last, self.remove_product]):
+                if self.click_element(test_case):
                     result_value = True
                 else:
                     return result_value
@@ -76,33 +76,34 @@ class TestAndroidCreateWebSession(unittest.TestCase):
         self.driver.swipe(lcd_size['width'], lcd_size['height'], lcd_size['width'], lcd_size['height']*0)
         print('Test Case: scroll_down')
 
-    def click_element(self, index, test_case):
+    def click_element(self, test_case):
         for test_case_name, test_case_xpath in test_case.items():
             self.test_case_name = test_case_name
             result_value = False
-            elem = WebDriverWait(self.driver, self.time_out).until(EC.presence_of_element_located((By.XPATH, test_case_xpath)))
-            time.sleep(self.time_out)
+            elem = WebDriverWait(self.driver, self.time_out_element).until(EC.visibility_of_element_located((By.XPATH, test_case_xpath)))
             if elem:
                 elem.click()
                 result_value = True
-            if index == 0:
+            if test_case_name == 'product_swimsuit':
                 time.sleep(self.time_out)
                 self.scroll_down()
-            elif index == 1:
+            elif test_case_name == 'swimsuit_size':
                 result_value = self.get_test_detail_information(self.product_swimsuit_detail_info)
-            elif index == 2:
+            elif test_case_name == 'add_to_cart_button':
                 result_value = self.get_test_detail_information(self.product_swimsuit_detail_check_cart)
                 self.driver.press_keycode(self.HARD_WARE_BACK_BUTTON_KEY_CODE)
                 self.driver.press_keycode(self.HARD_WARE_BACK_BUTTON_KEY_CODE)
                 # self.driver.find_element_by_xpath(self.go_back_button).click()
-            elif index == 3:
+            elif test_case_name == 'product_helmet':
                 result_value = self.get_test_detail_information(self.product_helmet_detail_info)
-            elif index == 4:
+            elif test_case_name == 'add_to_cart_last':
                 result_value = self.get_test_detail_information(self.product_swimsuit_detail_check_cart
                                                                 + self.product_helmet_detail_check_cart)
             if result_value is True:
+                print("Test Cases: " + test_case_name + " : Pass")
                 self.test_result.append("Pass")
             else:
+                print("Test Cases: " + test_case_name + " : Fail")
                 self.test_result.append("Fail")
             time.sleep(self.time_out)
             return result_value
