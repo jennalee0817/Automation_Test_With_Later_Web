@@ -9,9 +9,12 @@ from appium.webdriver.common.mobileby import By
 
 
 class TestAndroidCreateWebSession(unittest.TestCase):
-    time_out_element = 20
-    time_out = 1
+    time_out_for_element = 20
+    time_sleep = 1
     HARD_WARE_BACK_BUTTON_KEY_CODE = 4
+    test_result_pass = 'Pass'
+    test_result_fail = 'Fail'
+
     test_result = []
 
     product_wheel = {'product_wheel': '//*[contains(text(), "Ken Block living life on the edge.")]'}
@@ -48,14 +51,14 @@ class TestAndroidCreateWebSession(unittest.TestCase):
             self.driver.get(url)
             current_url = self.driver.current_url
             if url == current_url:
-                print("Test Case: url is " + current_url + " : Pass")
+                print("Test Case: url is " + current_url + " : "+self.test_result_pass)
                 result_value = True
             else:
-                print("Test Case: url is " + current_url + " : Fail")
+                print("Test Case: url is " + current_url + " : "+self.test_result_fail)
                 return result_value
 
             for test_case in ([self.product_swimsuit, self.swimsuit_size, self.add_to_cart_button,
-                          self.product_helmet, self.add_to_cart_last, self.remove_product]):
+                               self.product_helmet, self.add_to_cart_last, self.remove_product]):
                 if self.click_element(test_case):
                     result_value = True
                 else:
@@ -66,12 +69,13 @@ class TestAndroidCreateWebSession(unittest.TestCase):
 
         finally:
             print(self.test_result)
-            if 'Fail' in self.test_result:
+            if self.test_result_fail in self.test_result:
                 result_value = False
             print("test_automation: " + str(result_value))
             return result_value
 
     def scroll_down(self):
+        time.sleep(self.time_sleep)
         lcd_size = self.driver.get_window_size()
         self.driver.swipe(lcd_size['width'], lcd_size['height'], lcd_size['width'], lcd_size['height']*0)
         print('Test Case: scroll_down')
@@ -80,12 +84,11 @@ class TestAndroidCreateWebSession(unittest.TestCase):
         for test_case_name, test_case_xpath in test_case.items():
             self.test_case_name = test_case_name
             result_value = False
-            elem = WebDriverWait(self.driver, self.time_out_element).until(EC.visibility_of_element_located((By.XPATH, test_case_xpath)))
+            elem = WebDriverWait(self.driver, self.time_out_for_element).until(EC.visibility_of_element_located((By.XPATH, test_case_xpath)))
             if elem:
                 elem.click()
                 result_value = True
             if test_case_name == 'product_swimsuit':
-                time.sleep(self.time_out)
                 self.scroll_down()
             elif test_case_name == 'swimsuit_size':
                 result_value = self.get_test_detail_information(self.product_swimsuit_detail_info)
@@ -100,27 +103,30 @@ class TestAndroidCreateWebSession(unittest.TestCase):
                 result_value = self.get_test_detail_information(self.product_swimsuit_detail_check_cart
                                                                 + self.product_helmet_detail_check_cart)
             if result_value is True:
-                print("Test Cases: " + test_case_name + " : Pass")
-                self.test_result.append("Pass")
+                print("Test Cases: " + test_case_name + " : "+self.test_result_pass)
+                self.test_result.append(self.test_result_pass)
             else:
-                print("Test Cases: " + test_case_name + " : Fail")
-                self.test_result.append("Fail")
-            time.sleep(self.time_out)
+                print("Test Cases: " + test_case_name + " : "+self.test_result_fail)
+                self.test_result.append(self.test_result_fail)
+            time.sleep(self.time_sleep)
             return result_value
 
     def get_test_detail_information(self, product_detail_info):
         result_vale = False
-        time.sleep(self.time_out)
+        time.sleep(self.time_sleep)
         for detail_info in product_detail_info:
             if detail_info in self.driver.page_source:
-                detail_test_result = "Pass"
-                print("Test Case: Product information, " + detail_info + " is in the page - "+detail_test_result)
+                detail_test_result = self.test_result_pass
+                print("Test Case: Product information, " + detail_info + " is in the page - " + detail_test_result)
                 result_vale = True
             else:
-                detail_test_result = "Fail"
-                print("Test Case: Product information, " + detail_info + " is NOT in the page" + " - "+detail_test_result)
+                detail_test_result = self.test_result_fail
+                print("Test Case: Product information, " + detail_info + " is NOT in the page" + " - " + detail_test_result)
             self.test_result.append(detail_test_result)
         return result_vale
+
+    def tearDown(self):
+        self.driver.quit()
 
 
 if __name__ == "__main__":
